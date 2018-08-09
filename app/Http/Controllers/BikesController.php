@@ -116,6 +116,14 @@ class BikesController extends Controller
             
         }
 
-        return view('admin.list_bike')->with('status','Bike created successfully.'); 
+        // return view('admin.list_bike')->with('status','Bike created successfully.');
+        return back()->with('status','Bike created successfully.'); 
+
+    }
+
+    public function list_bikes()
+    {
+    	$bikes = Bike::orderBy('id','desc')->paginate('15');
+    	return view('admin.list_bike',compact('bikes'));
     }
 }
