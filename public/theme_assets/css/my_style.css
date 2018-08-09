@@ -1,0 +1,15 @@
+.footer{
+	margin-top: 5em;
+}
+
+.aboutContent {
+	text-align: justify;
+}
+
+.aboutContent p {
+	width:100%;
+}
+
+.aboutContent h2 {
+	margin-top: 30px;
+}
