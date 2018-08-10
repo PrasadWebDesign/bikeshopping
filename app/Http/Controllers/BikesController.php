@@ -117,7 +117,7 @@ class BikesController extends Controller
         }
 
         // return view('admin.list_bike')->with('status','Bike created successfully.');
-        return back()->with('status','Bike created successfully.'); 
+        return redirect('/all_bikes')->with('status','Bike created successfully.'); 
 
     }
 
@@ -125,5 +125,27 @@ class BikesController extends Controller
     {
     	$bikes = Bike::orderBy('id','desc')->paginate('15');
     	return view('admin.list_bike',compact('bikes'));
+    }
+
+    public function destroy($id)
+    {
+    	// delete a row from bikes table
+    	$bike = Bike::find($id);
+    	// return $bike;
+    	$bike->delete();
+
+    	// // delete rows from bike_other_images table
+    	$bike_other_image = bike_other_image::where('bike_id',$id)->delete();
+    	// return $bike_other_image = bike_other_image::where('bike_id',$id)->get();
+
+    	return redirect('/all_bikes')->with('status','Bike removed.');
+    }
+
+    public function edit($id)
+    {
+    	$bike = Bike::find($id);
+    	$bike_other_images = bike_other_image::where('bike_id',$id)->get();
+
+    	return view('admin.edit_bike',compact(['bike','bike_other_images']));
     }
 }
