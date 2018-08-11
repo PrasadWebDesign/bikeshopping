@@ -72,6 +72,10 @@ Route::put('/bikes/{id}/edit', 'BikesController@update')->name('bikes.update');
 // get list of bikes
 Route::get('/all_bikes', 'BikesController@list_bikes')->name('bikes.list_bikes');
 
+// get image partial
+Route::post('/bike_images_partial', 'BikesController@get_bike_image_partial')->name('bikes.get_bike_image_partial');
+Route::delete('/remove_bike_other_image', 'BikesController@remove_bike_other_image')->name('bikes.remove_bike_other_image');
+
 
 
 // End Admin Panel routes ------------------------------------

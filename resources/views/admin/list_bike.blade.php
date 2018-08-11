@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('header')
-	<script src="https://use.fontawesome.com/75736561a5.js"></script>
+	
 @endsection
 
 @section('content')
 	
 	<div class="container">
 	    <div class="row justify-content-center">
-	        <div class="col-md-8">
+	        <div class="col-md-10">
 	            <div class="card">
 	                <div class="card-header">All Bikes</div>
 
@@ -33,8 +33,19 @@
 	                    			<td>&#8377; {{$bike->hourly_rate}}</td>
 	                    			<td>{{$bike->created_at}}</td>
 	                    			<td>
-	                    				<a href="#"><i class="fa fa-pencil"></i></a>
-	                    				<a href="#"><i class="fa fa-trash"></i></a>
+	                    				<form method="get" action="{{ URL::to('/bikes') }}/{{$bike->id}}/edit">
+	                    					{{csrf_field()}}
+	                    					
+	                    					<button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></button>
+	                    				</form>
+	                    				
+
+	                    				<form method="post" action="{{ URL::to('/bikes') }}/{{$bike->id}}/delete">
+	                    					{{csrf_field()}}
+	                    					<input type="hidden" name="_method" value="DELETE">
+	                    					<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+	                    				</form>
+	                    				
 	                    			</td>
 	                    		</tr>
 	                    	@empty
