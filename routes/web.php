@@ -53,8 +53,29 @@ Route::get('/aboutus', 'AboutController@create')->name('about.create');
 Route::put('/aboutus', 'AboutController@update')->name('about.update');
 
 // bikes
+
+// get create bike form
 Route::get('/create_bike', 'BikesController@create')->name('bikes.create');
+
+// submit create bike form
 Route::post('/bikes', 'BikesController@store')->name('bikes.store');
+
+// delete a bike and its associated images
+Route::DELETE('/bikes/{id}/delete', 'BikesController@destroy')->name('bikes.destroy');
+
+// get edit bike form
+Route::get('/bikes/{id}/edit', 'BikesController@edit')->name('bikes.edit');
+
+// update bike by submiiting edit form
+Route::put('/bikes/{id}/edit', 'BikesController@update')->name('bikes.update');
+
+// get list of bikes
+Route::get('/all_bikes', 'BikesController@list_bikes')->name('bikes.list_bikes');
+
+// get image partial
+Route::post('/bike_images_partial', 'BikesController@get_bike_image_partial')->name('bikes.get_bike_image_partial');
+Route::delete('/remove_bike_other_image', 'BikesController@remove_bike_other_image')->name('bikes.remove_bike_other_image');
+
 
 
 // End Admin Panel routes ------------------------------------
