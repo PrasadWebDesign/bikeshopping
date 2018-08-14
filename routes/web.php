@@ -76,6 +76,16 @@ Route::get('/all_bikes', 'BikesController@list_bikes')->name('bikes.list_bikes')
 Route::post('/bike_images_partial', 'BikesController@get_bike_image_partial')->name('bikes.get_bike_image_partial');
 Route::delete('/remove_bike_other_image', 'BikesController@remove_bike_other_image')->name('bikes.remove_bike_other_image');
 
+// Teams
 
+// get create team form
+Route::get('/create_team', 'TeamController@create')->name('team.create');
+Route::post('/team', 'TeamController@store')->name('team.store');
+Route::get('/all_team', 'TeamController@list_teams')->name('team.list_teams');
+// get edit team form
+Route::get('/team/{id}/edit', 'TeamController@edit')->name('team.edit');
+Route::put('/team/{id}/edit', 'TeamController@update')->name('team.update');
+
+Route::DELETE('/team/{id}/delete', 'TeamController@destroy')->name('team.destroy');
 
 // End Admin Panel routes ------------------------------------
