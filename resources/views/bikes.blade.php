@@ -8,6 +8,7 @@
 					$('.scroll-pane').jScrollPane();
 				});
 			</script>
+
 	<!-- //the jScrollPane script -->
 @endsection
 
@@ -19,6 +20,37 @@
 				  <div class=" product-menu-bar">
 				    	<div class="col-md-3 prdt-right">
 						<div class="w_sidebar">
+							<section  class="sky-form">
+								<h1>Sort By</h1>
+								<div class="row1 scroll-pane">
+									<div class="col col-4">								
+										<div class="slidecontainer">
+										  	<p>Sort By Rates</p>
+										  	<select name="sortbybikes" id="sortbybikes" >
+			                                    <option value="rate-asc-rank">Rate: Low to High</option>
+			                                    <option value="rate-desc-rank">Rate: High to Low</option>
+		                                    </select>
+										</div>			
+									</div>
+								</div>
+							</section>
+
+
+							<section  class="sky-form">
+								<h1>Price</h1>
+								<div class="row1 scroll-pane">
+									<div class="col col-4">								
+										<div class="slidecontainer">
+										  <p>Default range slider:</p>
+										  <input type="range" min="1" max="100" value="50">
+										  
+										  <p>Custom range slider:</p>
+										  <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+										</div>			
+									</div>
+								</div>
+							</section>
+
 							<section  class="sky-form">
 								<h1>Categories</h1>
 								<div class="row1 scroll-pane">
@@ -97,7 +129,7 @@
 						</div>
 					</div>
 				  </div>	
-				  <div class="col-md-9 product-block">
+				  <div class="col-md-9 product-block" id="product-block">
 				  	@forelse ($bikes as $bike)
 		  		      <div class="col-md-4 home-grid">
 		  				<div class="home-product-main">
@@ -126,4 +158,33 @@
 		</div>
 	</div>
 	<!--product end here-->
+
+<script type="text/javascript">
+		$('document').ready(function(){
+
+			$('#sortbybikes').change(function(){
+
+				$.ajaxSetup({
+				  headers: {
+				    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				  }
+				});
+				$.ajax({
+					type:'POST',
+					url:'{{URL::to('/bike_filter')}}',
+					data:{ 
+						sort_by_bikes: $(this).val(),
+						_token: "{{csrf_token()}}",
+						},
+						
+					success:function(resp){
+						$('#product-block').html(resp);
+						
+					}
+				});
+			});
+
+		});
+	</script>
 @endsection
+

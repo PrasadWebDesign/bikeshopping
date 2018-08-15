@@ -23,7 +23,7 @@ class BikesController extends Controller
 	public function index()
 	{
 		//paginate(per_page) will fetch the records and create numbered links
-    	$bikes = Bike::paginate(1);
+    	$bikes = Bike::paginate(4);
 
     	//simplePaginate(per_page) will fetch the records and create next/prev links
     	// $bikes = Bike::simplePaginate(1);
@@ -290,5 +290,12 @@ class BikesController extends Controller
 			
         }
     	
+    }
+
+    public function get_bike_filter(Request $request) {
+        $get_all_bikes = Bike::sort_by_bikes($request['sort_by_bikes']);
+
+        $get_all_bikes = view('/ajax_bikes_sort_filter', compact('get_all_bikes'));
+        dd($get_all_bikes);
     }
 }
