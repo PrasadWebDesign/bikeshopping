@@ -98,11 +98,12 @@
 					</div>
 				  </div>	
 				  <div class="col-md-9 product-block">
+				  	<?php $i=1; ?>
 				  	@forelse ($bikes as $bike)
 		  		      <div class="col-md-4 home-grid">
 		  				<div class="home-product-main">
 		  				   <div class="home-product-top">
-		  				      <a href="{{ URL::to('/bike_single') }}"><img src="{{ asset('/theme_assets') }}/images/h19.jpg" alt="" class="img-responsive zoom-img"></a>
+		  				      <a href="{{ URL::to('/bike_single')}}/{{$bike->id }}"><img src="{{ asset('/storage/bikes') }}/{{$bike->cover_image}}" alt="" class="img-responsive zoom-img" ></a>
 		  				   </div>
 		  					<div class="home-product-bottom">
 		  							<h3><a href="{{ URL::to('/bike_single/') }}/{{$bike->id}}">{{ $bike->bike_title }}</a></h3>
@@ -113,6 +114,13 @@
 		  					</div>
 		  				</div>
 		  			 </div>
+					<?php 
+					if(($i%3)==0) 
+					{
+						echo '<div class="clearfix"> </div>';
+					}
+					$i++;
+					?>
 				  	@empty
 				  		No Bike(s) found.
 				  	@endforelse

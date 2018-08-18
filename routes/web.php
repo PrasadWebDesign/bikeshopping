@@ -24,9 +24,9 @@ Route::get('/bikes', 'BikesController@index')->name('bikes');
 //     return view('bikes');
 // });
 
-Route::get('/bike_single', function () {
-    return view('bike_single');
-});
+Route::get('/bike_single/{bike_id}','BikesController@show_single_bike')->name('bikes.show_single_bike');
+
+Route::post('/booking_request','BikesController@booking_request')->name('bikes.booking_request');
 
 Route::get('/contact', function () {
     return view('contact');
@@ -78,6 +78,7 @@ Route::delete('/remove_bike_other_image', 'BikesController@remove_bike_other_ima
 
 // Teams
 
+
 // get create team form
 Route::get('/create_team', 'TeamController@create')->name('team.create');
 Route::post('/team', 'TeamController@store')->name('team.store');
@@ -87,5 +88,6 @@ Route::get('/team/{id}/edit', 'TeamController@edit')->name('team.edit');
 Route::put('/team/{id}/edit', 'TeamController@update')->name('team.update');
 
 Route::DELETE('/team/{id}/delete', 'TeamController@destroy')->name('team.destroy');
+
 
 // End Admin Panel routes ------------------------------------
