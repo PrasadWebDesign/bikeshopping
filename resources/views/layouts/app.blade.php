@@ -62,13 +62,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}">
+                                    <a class="dropdown-item" href="{{ route('team.create') }}">
                                         Add Team Member
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}">
-                                        Delete Team Member
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}">
+                                    <a class="dropdown-item" href="{{ route('team.list_teams') }}">
                                         View Team
                                     </a>
                                 </div>

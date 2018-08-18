@@ -23,12 +23,12 @@
 	<script src="{{ asset('theme_assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js') }}"></script>
 	<script>
 		$(function() {
-		  $('#datetimepicker').datetimepicker({
+		  $('#ride_end_date').datetimepicker({
 		  	format: 'dd-mm-yyyy hh:ii',
 		  	autoclose:true,
 		  	startDate:new Date()
 		  });
-		  $('#datetimepicker1').datetimepicker({
+		  $('#ride_start_date').datetimepicker({
 		  	format: 'dd-mm-yyyy hh:ii',
 		  	autoclose:true,
 		  	startDate:new Date()
@@ -44,6 +44,44 @@
 		    return true;
 		}
 	</script>
+	<style type="text/css">
+		.border {
+		    border: 1px solid #dee2e6;
+		}
+		.border-danger {
+		    border-color: #dc3545!important;
+		}
+		.modal_loader
+        {
+            position: fixed;
+            z-index: 999;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background-color: white;
+            filter: alpha(opacity=60);
+            opacity: 0.6;
+            -moz-opacity: 0.8;
+        }
+        .center
+        {
+            z-index: 1000;
+            margin: 40vh auto;
+            padding: 10px;
+            width: 130px;
+            background-color: transparent;
+            border-radius: 10px;
+            filter: alpha(opacity=100);
+            opacity: 1;
+            -moz-opacity: 1;
+        }
+        .center img
+        {
+            /*        height: 200px;
+                    width: 300px;*/
+        }
+	</style>
 @endsection
 
 @section('content')
@@ -55,7 +93,16 @@
 		   		<div class="col-md-5 single-top">	
 				   <div class="flexslider">
 					  <ul class="slides">
-					    <li data-thumb="{{ asset('theme_assets') }}/images/si1.jpg">
+					  	@forelse ($bike_other_images as $image)
+					  		<li data-thumb="{{ asset('storage/bikes') }}/{{$image}}">
+						        <div class="thumb-image"> <img src="{{ asset('storage/bikes') }}/{{$image}}" data-imagezoom="true" class="img-responsive"> </div>
+						    </li>
+					  	@empty
+					  		<li data-thumb="{{ asset('storage/bikes') }}/noimage.jpg">
+						        <div class="thumb-image"> <img src="{{ asset('storage/bikes') }}/noimage.jpg" data-imagezoom="true" class="img-responsive"> </div>
+						    </li>
+					  	@endforelse
+					    {{-- <li data-thumb="{{ asset('theme_assets') }}/images/si1.jpg">
 					        <div class="thumb-image"> <img src="{{ asset('theme_assets') }}/images/s1.jpg" data-imagezoom="true" class="img-responsive"> </div>
 					    </li>
 					    <li data-thumb="{{ asset('theme_assets') }}/images/si2.jpg">
@@ -63,20 +110,23 @@
 					    </li>
 					    <li data-thumb="{{ asset('theme_assets') }}/images/si3.jpg">
 					       <div class="thumb-image"> <img src="{{ asset('theme_assets') }}/images/s3.jpg" data-imagezoom="true" class="img-responsive"> </div>
-					    </li> 
+					    </li>  --}}
 					  </ul>
 				</div>
 				</div>
 				<div class="col-md-7 single-top-left simpleCart_shelfItem">
-					<h2>Undercover</h2>
-					<h1>Bike Name</h1>
-					<h3>Model Name</h3>
-					<h6 class="item_price">&#8377;100/Hour</h6>			
-					<p>On the other hand, we denounce with righteous indignation and dislike men who are so beguiled Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.</p><br>
+					{{-- <h2>Undercover</h2> --}}
+					<h1>{{$bike->bike_title}}</h1>
+					
+					<h6 class="item_price">&#8377;{{$bike->hourly_rate}}/Hour</h6>			
+					{!!$bike->description!!}
+					<br>
 					<button type="button" class="btn btn-danger btn-lg" value="Book" data-toggle="modal" data-target="#myModal">Book</button>
 				</div>
 			<form id="booking_request_form" method="POST" action="#">
 				{{ csrf_field() }}
+				<input type="hidden" name="bike_id" id="bike_id" value="{{$bike->id}}">
+				<input type="hidden" name="bike_hourly_rate" id="bike_hourly_rate" value="{{$bike->hourly_rate}}">
 				<!-- Modal -->
 				<div id="myModal" class="modal fade" role="dialog">
 				  <div class="modal-dialog">
@@ -90,46 +140,83 @@
 				      <div class="modal-body">
 			        	<div class="form-group">
 				            <label for="email">Full Name</label>
-				            <input type="text" class="form-control" id="name" name="name" required="required">
+				            <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}">
+				            {{-- @if ($errors->has('name'))
+				            	<span class="invalid-feedback">
+				            		<b>{{$errors->first('name')}}</b>
+				            	</span>
+				            @endif --}}
 			          	</div>
 			          	<div class="form-group">
 				            <label for="pwd">Email</label>
-				            <input type="email" class="form-control" id="email" name="email" required="required">
+				            <input type="email" class="form-control" id="email" name="email" value="{{old('email')}}">
+				            {{-- @if ($errors->has('email'))
+				                <span class="invalid-feedback" role="alert">
+				                    <strong>{{ $errors->first('email') }}</strong>
+				                </span>
+				            @endif --}}
 			          	</div>
           	          	<div class="form-group">
           		            <label for="pwd">Mobile</label>
-          		            <input type="text" class="form-control" id="mobile" name="mobile" required="required"  onkeypress="return isNumber(event)" maxlength="10">
+          		            <input type="text" class="form-control" id="mobile" name="mobile" onkeypress="return isNumber(event)" maxlength="10" value="{{old('mobile')}}">
+          		            {{-- @if ($errors->has('mobile'))
+          		                <span class="invalid-feedback" role="alert">
+          		                    <strong>{{ $errors->first('mobile') }}</strong>
+          		                </span>
+          		            @endif --}}
           	          	</div>
           	          	<div class="form-group">
           		            <label for="pwd">Age</label>
-          		            <input type="text" class="form-control" id="age" name="age" required="required" onkeypress="return isNumber(event)" maxlength="2">
+          		            <input type="text" class="form-control" id="age" name="age" onkeypress="return isNumber(event)" maxlength="2" value="{{old('age')}}">
+          		            {{-- @if ($errors->has('age'))
+          		                <span class="invalid-feedback" role="alert">
+          		                    <strong>{{ $errors->first('age') }}</strong>
+          		                </span>
+          		            @endif --}}
           	          	</div>
           	          	<div class="form-group">
           		            <label for="pwd">Ride Start Date/Time</label>
           		            <div class='input-group date' id='startTimeDatePicker'>
-          		                    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="datetimepicker1" name="StartDate" type="datetime" value=""  required="required"/>
+          		                    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="ride_start_date" name="ride_start_date" type="datetime"  value="{{old('ride_start_date')}}"  />
           		                    <span class="input-group-addon">
           		                      <span class="glyphicon glyphicon-calendar"></span>
           		                    </span>
           		                 </div>
+          		                 {{-- @if ($errors->has('ride_start_date'))
+          		                     <span class="invalid-feedback" role="alert">
+          		                         <strong>{{ $errors->first('ride_start_date') }}</strong>
+          		                     </span>
+          		                 @endif --}}
           	          	</div>
 				      
 				      <div class="form-group">
           		            <label for="pwd">Ride End Date/Time</label>
           		            <div class='input-group date' id='startTimeDatePicker'>
-          		                    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="datetimepicker" name="StartDate" type="datetime" value=""  required="required"/>
+          		                    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="ride_end_date" name="ride_end_date" type="datetime" value="{{old('ride_end_date')}}"/>
           		                    <span class="input-group-addon">
           		                      <span class="glyphicon glyphicon-calendar"></span>
           		                    </span>
           		                 </div>
+          		                 {{-- @if ($errors->has('ride_end_date'))
+          		                     <span class="invalid-feedback" role="alert">
+          		                         <strong>{{ $errors->first('ride_end_date') }}</strong>
+          		                     </span>
+          		                 @endif --}}
           	          	</div>
           	          	<div class="form-group">
           		            <label for="pwd">Address</label>
-          		            <textarea class="form-control" name="address" id="address" required="required"></textarea>
+          		            <textarea class="form-control" name="address" id="address">{{old('address')}}</textarea>
+          		            {{-- @if ($errors->has('address'))
+          		                <span class="invalid-feedback" role="alert">
+          		                    <strong>{{ $errors->first('address') }}</strong>
+          		                </span>
+          		            @endif --}}
           	          	</div>
           	          	<div class="form-group">
           		            <input type="submit" name="btnSubmit" class="btn btn-primary" value="Submit">
           	          	</div>
+          	          	
+          	          	<div class="alert alert-success messageDiv" style="display: none;"></div>
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -205,4 +292,85 @@
 	   </div>
 	</div>
 	<!--single end here-->
+
+	<script type="text/javascript">
+		(function () {
+			$('#booking_request_form').submit(function(e){
+				e.preventDefault();
+				$.ajaxSetup({
+				  headers: {
+				    'X-Request-With': 'XMLHttpRequest'
+				  },
+				  global: false,
+				  beforeSend: function () {
+				      $(".modal_loader").show();
+				  },
+				  complete: function () {
+				      $(".modal_loader").hide();
+				  }
+				});
+				$.ajax({
+					type:'post',
+					url:'{{URL::to('/booking_request')}}',
+					data:{
+						name:$('#name').val(),
+						email:$('#email').val(),
+						mobile:$('#mobile').val(),
+						age:$('#age').val(),
+						ride_start_date:$('#ride_start_date').val(),
+						ride_end_date:$('#ride_end_date').val(),
+						address:$('#address').val(),
+						"_token":"{{csrf_token()}}",
+						bike_id:$('#bike_id').val(),
+						bike_hourly_rate:$('#bike_hourly_rate').val()
+
+					},
+					cache:false,
+					dataType:'json',
+					success:function(resp){
+						$('.messageDiv').html(resp.status).show();
+						
+					},
+					// 
+					error:function (jqXHR, textStatus, errorThrown) {
+						// console.error(jqXHR);
+						const error = jqXHR.responseJSON.errors;
+
+						const firstItem = Object.keys(error)[0];
+						const firstItemDOM = document.getElementById(firstItem);
+						const firstErrorMessage = error[firstItem][0];
+
+						// scroll into that error field
+						// firstItemDOM.scrollIntoView({behavior:'smooth'});
+						firstItemDOM.scrollIntoView();
+
+						clearErrors();
+
+						// show error message
+						firstItemDOM.insertAdjacentHTML('afterend', `<div class="text-danger"><b>${firstErrorMessage}</b></div>`);
+						
+
+						// highlight the form control with the error
+                    	firstItemDOM.classList.add('border', 'border-danger')	
+					}
+				});
+			});
+			function clearErrors() {
+                // remove all error messages
+                const errorMessages = document.querySelectorAll('.text-danger')
+                errorMessages.forEach((element) => element.textContent = '')
+                // remove all form controls with highlighted error text box
+                const formControls = document.querySelectorAll('.form-control')
+                formControls.forEach((element) => element.classList.remove('border', 'border-danger'))
+            }
+		})();
+	</script>
+@endsection
+
+@section('footer')
+	<div class="modal modal_loader" style="display: none">
+	        <div class="center">
+	            <img alt="" src="{{ asset('theme_assets/images/ajax-l2.gif') }}" />
+	        </div>
+	    </div>
 @endsection
