@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('header')
+<link rel="stylesheet" href="{{ asset('theme_assets') }}/css/bootstrap-slider.css" type="text/css" media="screen" />
 	<!-- the jScrollPane script -->
 	<script type="text/javascript" src="{{ asset('') }}theme_assets/js/jquery.jscrollpane.min.js"></script>
 			<script type="text/javascript" id="sourcecode">
@@ -9,6 +10,11 @@
 				});
 			</script>
 
+<style type="text/css">
+	#ex1Slider .slider-selection {
+	background: #BABABA;
+}
+</style>
 	<!-- //the jScrollPane script -->
 @endsection
 
@@ -29,6 +35,8 @@
 										  	<select name="sortbybikes" id="sortbybikes" >
 			                                    <option value="rate-asc-rank">Rate: Low to High</option>
 			                                    <option value="rate-desc-rank">Rate: High to Low</option>
+			                                    <option value="id-desc-rank">Newest</option>
+			                                    <option value="id-asc-rank">Oldest</option>
 		                                    </select>
 										</div>			
 									</div>
@@ -39,92 +47,13 @@
 							<section  class="sky-form">
 								<h1>Price</h1>
 								<div class="row1 scroll-pane">
-									<div class="col col-4">								
-										<div class="slidecontainer">
-										  <p>Default range slider:</p>
-										  <input type="range" min="1" max="100" value="50">
-										  
-										  <p>Custom range slider:</p>
-										  <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-										</div>			
-									</div>
-								</div>
-							</section>
+									<div class="col col-4">	
 
-							<section  class="sky-form">
-								<h1>Categories</h1>
-								<div class="row1 scroll-pane">
-									<div class="col col-4">
-										<label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i></i>All Accessories</label>
-									</div>
-									<div class="col col-4">								
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>handbags</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Bracelets</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Watches</label>			
-									</div>
+										<b>{{$min_rate}}</b> <input id="ex2" type="text" class="span2 pricerangesliderbikes" value="" data-slider-min="{{$min_rate}}" data-slider-max="{{$max_rate}}" data-slider-step="50" data-slider-value="[{{$min_rate}},{{$max_rate}}]"/> <b> {{$max_rate}}</b>
+
+										<!-- <input id="ex1" class="pricerangesliderbikes" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="500" data-slider-step="50" data-slider-value="200"/> -->
+
 								</div>
-							</section>
-							<section  class="sky-form">
-								<h2>Brand</h2>
-								<div class="row1 row2 scroll-pane">
-									<div class="col col-4">
-										<label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i></i>All Brands</label>
-									</div>
-									<div class="col col-4">
-									    <label class="checkbox"><input type="checkbox" name="checkbox"><i></i>kurtas</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Sonata</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Titan</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Puma</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Nike</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Fastrack</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Chanel</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Fendi</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Hilde Palladino</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Lana Marks</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>Prada</label>
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>flipkart</label>									
-									</div>
-								</div>
-							</section>
-							<section class="sky-form">
-								<h4>discount</h4>
-									<div class="row1 row2 scroll-pane">
-										<div class="col col-4">
-											<label class="radio"><input type="radio" name="radio" checked=""><i></i>60 % and above</label>
-											<label class="radio"><input type="radio" name="radio"><i></i>50 % and above</label>
-											<label class="radio"><input type="radio" name="radio"><i></i>40 % and above</label>
-										</div>
-										<div class="col col-4">
-											<label class="radio"><input type="radio" name="radio"><i></i>30 % and above</label>
-											<label class="radio"><input type="radio" name="radio"><i></i>20 % and above</label>
-											<label class="radio"><input type="radio" name="radio"><i></i>10 % and above</label>
-										</div>
-									</div>						
-							</section>
-							<section class="sky-form">
-								<h4>Colour</h4>
-									<ul class="w_nav2">
-										<li><a class="color1" href="#"></a></li>
-										<li><a class="color2" href="#"></a></li>
-										<li><a class="color3" href="#"></a></li>
-										<li><a class="color4" href="#"></a></li>
-										<li><a class="color5" href="#"></a></li>
-										<li><a class="color6" href="#"></a></li>
-										<li><a class="color7" href="#"></a></li>
-										<li><a class="color8" href="#"></a></li>
-										<li><a class="color9" href="#"></a></li>
-										<li><a class="color10" href="#"></a></li>
-										<li><a class="color12" href="#"></a></li>
-										<li><a class="color13" href="#"></a></li>
-										<li><a class="color14" href="#"></a></li>
-										<li><a class="color15" href="#"></a></li>
-										<li><a class="color5" href="#"></a></li>
-										<li><a class="color6" href="#"></a></li>
-										<li><a class="color7" href="#"></a></li>
-										<li><a class="color8" href="#"></a></li>
-										<li><a class="color9" href="#"></a></li>
-										<li><a class="color10" href="#"></a></li>
-									</ul>
 							</section>
 						</div>
 					</div>
@@ -152,21 +81,31 @@
 				      
 				      <div class="clearfix"> </div>
 
-				      {{$bikes->links()}}
+				      <!-- {{$bikes->links()}} -->
 				  </div>
 			</div>
 		</div>
 	</div>
 	<!--product end here-->
-
+<script type="text/javascript" src="{{ asset('') }}theme_assets/js/bootstrap-slider.js"></script>
 <script type="text/javascript">
 		$('document').ready(function(){
+//Tooltip of range slider
+			$('#ex1').slider({
+				formatter: function(value) {
+					return 'Current value: ' + value;
+				}
+			});
 
+			$("#ex2").slider({});
+
+//Sort by Rates bikes
 			$('#sortbybikes').change(function(){
 
 				$.ajaxSetup({
 				  headers: {
-				    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+
 				  }
 				});
 				$.ajax({
@@ -176,7 +115,7 @@
 						sort_by_bikes: $(this).val(),
 						_token: "{{csrf_token()}}",
 						},
-						
+					Accept : 'application/json',
 					success:function(resp){
 						$('#product-block').html(resp);
 						
@@ -184,6 +123,27 @@
 				});
 			});
 
+// Price range slider
+			$('.pricerangesliderbikes').change(function(){
+
+				$.ajaxSetup({
+				  headers: {
+				    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				  }
+				});
+				$.ajax({
+					type:'POST',
+					url:'{{URL::to('/bike_price_filter')}}',
+					data:{ 
+						price_range: $(this).val(),
+						_token: "{{csrf_token()}}",
+						},
+					Accept : 'application/json',	
+					success:function(resp){
+						$('#product-block').html(resp);
+					}
+				});
+			});
 		});
 	</script>
 @endsection

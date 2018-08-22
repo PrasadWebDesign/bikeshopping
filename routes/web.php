@@ -76,9 +76,11 @@ Route::get('/all_bikes', 'BikesController@list_bikes')->name('bikes.list_bikes')
 Route::post('/bike_images_partial', 'BikesController@get_bike_image_partial')->name('bikes.get_bike_image_partial');
 Route::delete('/remove_bike_other_image', 'BikesController@remove_bike_other_image')->name('bikes.remove_bike_other_image');
 
-//bike filter
+//bike filter sort by rates
 Route::post('/bike_filter', 'BikesController@get_bike_filter')->name('bikes.get_bike_filter');
 
+//bike filter price range slider
+Route::post('/bike_price_filter', 'BikesController@get_bike_price_filter')->name('bikes.bike_price_filter');
 
 
 // End Admin Panel routes ------------------------------------
