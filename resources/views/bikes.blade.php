@@ -80,8 +80,7 @@
 				      
 				      
 				      <div class="clearfix"> </div>
-
-				      <!-- {{$bikes->links()}} -->
+				      {{$bikes->links()}}
 				  </div>
 			</div>
 		</div>

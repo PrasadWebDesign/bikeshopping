@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 use App\Bike;
 use App\bike_other_image;
 use File;
@@ -307,7 +309,25 @@ class BikesController extends Controller
         $max_price = $arr_range[1];
 
         $get_all_bikes = Bike::sort_by_price($min_price, $max_price);
-        dd($get_all_bikes);
-        return view('/ajax_bikes_sort_filter', compact('get_all_bikes'));
+
+        // Get current page form url e.x. &page=1
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+ 
+        // Create a new Laravel collection from the array data
+        $itemCollection = collect($get_all_bikes);
+ 
+        // Define how many items we want to be visible in each page
+        $perPage = 4;
+ 
+        // Slice the collection to get the items to display in current page
+        $currentPageItems = $itemCollection->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
+ 
+        // Create our paginator and pass it to the view
+        $paginatedItems= new LengthAwarePaginator($currentPageItems , count($itemCollection), $perPage);
+ 
+        // set url path for generted links
+        $paginatedItems->setPath($request->url());
+
+        return view('/ajax_bikes_sort_filter', ['get_all_bikes' => $paginatedItems]);
     }
 }

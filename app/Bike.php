@@ -47,17 +47,8 @@ class Bike extends Model
     }
 
     public static function sort_by_price($min_price, $max_price) {
-        /*$sql =  DB::table('bikes')
-                // ->select('*')
-                // ->whereRaw()
-                // ->where('hourly_rate', '>=', $min_price)
-                // ->where('hourly_rate', '<=', $max_price)
-                ->whereBetween('hourly_rate', array($min_price, $max_price) )
-                // ->orderBy('hourly_rate')
-                ->get();*/
-
         $sql = DB::select(' SELECT * FROM bikes WHERE hourly_rate >= '. $min_price .' AND hourly_rate<= '. $max_price .' ORDER BY hourly_rate');        
-        // dd($sql);
+
         return $sql; 
     }
 
