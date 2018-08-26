@@ -1,5 +1,5 @@
  
-  	@forelse ($get_all_bikes as $bike)
+  	@forelse ($bikes as $bike)
 	      <div class="col-md-4 home-grid">
 			<div class="home-product-main">
 			   <div class="home-product-top">
@@ -21,5 +21,24 @@
       
       <div class="clearfix"> </div>
 
-      {{$get_all_bikes->links()}}
-  
+<!--       {{$bikes->appends(request()->input())->links()}}
+ -->  
+ {{$bikes->links()}}
+
+ <script type="text/javascript">
+		$('document').ready(function(){
+
+$('.page-link').on('click', function(e){
+    e.preventDefault();
+    //var url = $(this).attr('href');
+    var url = $(this).attr('href'),
+        page = url.split('page=')[1];
+    var url = '{{URL::to('/bike_filter')}}'+'?page='+page;
+    $.get(url, { sort_by_bikes: $('#sortbybikes').val(), _token: "{{csrf_token()}}"	}, function(data){
+        $('#product-block').html(data);
+    });
+});
+
+});
+
+</script>

@@ -7,7 +7,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Bike;
 use App\bike_other_image;
+// use App\Http\Controllers\View;
 use File;
+use View;
+
 
 class BikesController extends Controller
 {
@@ -25,7 +28,7 @@ class BikesController extends Controller
 	public function index()
 	{
 		//paginate(per_page) will fetch the records and create numbered links
-    	$bikes = Bike::paginate(4);
+    	$bikes = Bike::paginate(4); 
         $min_rate = Bike::min('hourly_rate')-50;
         $max_rate = Bike::max('hourly_rate')+50;
 
@@ -297,37 +300,21 @@ class BikesController extends Controller
     }
 
     public function get_bike_filter(Request $request) {
-        $get_all_bikes = Bike::sort_by_bikes($request['sort_by_bikes']);
 
-        return view('/ajax_bikes_sort_filter', compact('get_all_bikes'));
-        // dd($get_all_bikes);
+        $bikes = Bike::sort_by_bikes($request['sort_by_bikes']);
+
+        return view('/ajax_bikes_sort_filter', compact('bikes'))->render();
     }
 
     public function get_bike_price_filter(Request $request) {
         $arr_range = explode(',', $request['price_range']);
         $min_price = $arr_range[0];
+
         $max_price = $arr_range[1];
 
-        $get_all_bikes = Bike::sort_by_price($min_price, $max_price);
+        $bikes = Bike::sort_by_price($min_price, $max_price);
 
-        // Get current page form url e.x. &page=1
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
- 
-        // Create a new Laravel collection from the array data
-        $itemCollection = collect($get_all_bikes);
- 
-        // Define how many items we want to be visible in each page
-        $perPage = 4;
- 
-        // Slice the collection to get the items to display in current page
-        $currentPageItems = $itemCollection->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
- 
-        // Create our paginator and pass it to the view
-        $paginatedItems= new LengthAwarePaginator($currentPageItems , count($itemCollection), $perPage);
- 
-        // set url path for generted links
-        $paginatedItems->setPath($request->url());
+        return view('/ajax_bikes_sort_filter', compact('bikes'))->render();
 
-        return view('/ajax_bikes_sort_filter', ['get_all_bikes' => $paginatedItems]);
     }
 }

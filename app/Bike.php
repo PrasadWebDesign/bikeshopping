@@ -14,7 +14,8 @@ class Bike extends Model
     		$sql =  DB::table('bikes')
     			->select('*')
     			->orderBy('hourly_rate')
-    			->paginate(4);
+    			->paginate(4)
+                ->appends('hourly_rate', $sort_type);
 
     		return $sql;
 
@@ -22,7 +23,8 @@ class Bike extends Model
     		$sql = DB::table('bikes')
     			->select('*')
     			->orderBy('hourly_rate', 'desc')
-    			->paginate(4);
+    			->paginate(4)
+                ->appends('hourly_rate', $sort_type);
 
     		return $sql;
 
@@ -30,7 +32,8 @@ class Bike extends Model
             $sql = DB::table('bikes')
                 ->select('*')
                 ->orderBy('id', 'desc')
-                ->paginate(4);
+                ->paginate(4)
+                ->appends('id', $sort_type);
 
             return $sql;
 
@@ -38,7 +41,8 @@ class Bike extends Model
             $sql = DB::table('bikes')
                 ->select('*')
                 ->orderBy('id')
-                ->paginate(4);
+                ->paginate(4)
+                ->appends('id', $sort_type);
 
             return $sql;
         } 
@@ -47,8 +51,10 @@ class Bike extends Model
     }
 
     public static function sort_by_price($min_price, $max_price) {
-        $sql = DB::select(' SELECT * FROM bikes WHERE hourly_rate >= '. $min_price .' AND hourly_rate<= '. $max_price .' ORDER BY hourly_rate');        
-
+        $sql = Bike::whereBetween('hourly_rate', [$min_price, $max_price])
+             ->orderBy('hourly_rate')
+             ->paginate(4);
+   
         return $sql; 
     }
 

@@ -77,7 +77,7 @@ Route::post('/bike_images_partial', 'BikesController@get_bike_image_partial')->n
 Route::delete('/remove_bike_other_image', 'BikesController@remove_bike_other_image')->name('bikes.remove_bike_other_image');
 
 //bike filter sort by rates
-Route::post('/bike_filter', 'BikesController@get_bike_filter')->name('bikes.get_bike_filter');
+Route::get('/bike_filter', 'BikesController@get_bike_filter')->name('bikes.get_bike_filter');
 
 //bike filter price range slider
 Route::post('/bike_price_filter', 'BikesController@get_bike_price_filter')->name('bikes.bike_price_filter');

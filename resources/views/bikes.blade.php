@@ -20,11 +20,12 @@
 
 @section('content')
 	<!--product start here-->
-	<div class="product">
+	<div class="product"  >
 		<div class="container">
 			<div class="product-main">
+
 				  <div class=" product-menu-bar">
-				    	<div class="col-md-3 prdt-right">
+				    <div class="col-md-3 prdt-right">
 						<div class="w_sidebar">
 							<section  class="sky-form">
 								<h1>Sort By</h1>
@@ -33,6 +34,7 @@
 										<div class="slidecontainer">
 										  	<p>Sort By Rates</p>
 										  	<select name="sortbybikes" id="sortbybikes" >
+										  		<option>SELECT</option>
 			                                    <option value="rate-asc-rank">Rate: Low to High</option>
 			                                    <option value="rate-desc-rank">Rate: High to Low</option>
 			                                    <option value="id-desc-rank">Newest</option>
@@ -58,7 +60,8 @@
 						</div>
 					</div>
 				  </div>	
-				  <div class="col-md-9 product-block" id="product-block">
+
+				  <div class="col-md-9 " id="product-block">
 				  	@forelse ($bikes as $bike)
 		  		      <div class="col-md-4 home-grid">
 		  				<div class="home-product-main">
@@ -80,7 +83,9 @@
 				      
 				      
 				      <div class="clearfix"> </div>
-				      {{$bikes->links()}}
+				          <!--  {{$bikes->appends(request()->input())->links()}} -->
+				          {{$bikes->links()}}
+
 				  </div>
 			</div>
 		</div>
@@ -98,6 +103,21 @@
 
 			$("#ex2").slider({});
 
+
+// $('.page-link').on('click', function(e){
+//     e.preventDefault();
+//     alert('pagination');
+//     //var url = $(this).attr('href');
+//     var url = $(this).attr('href'),
+//         page = url.split('page=')[1];
+//     var url = '{{URL::to('/bike_filter')}}'+'?page='+page;
+//     $.get(url, { sort_by_bikes: $('#sortbybikes').val(), _token: "{{csrf_token()}}"	}, function(data){
+//         $('#product-block').html(data);
+//     });
+// });
+
+
+
 //Sort by Rates bikes
 			$('#sortbybikes').change(function(){
 
@@ -108,13 +128,14 @@
 				  }
 				});
 				$.ajax({
-					type:'POST',
+					type:'GET',
 					url:'{{URL::to('/bike_filter')}}',
 					data:{ 
 						sort_by_bikes: $(this).val(),
 						_token: "{{csrf_token()}}",
 						},
 					Accept : 'application/json',
+					 async : true,
 					success:function(resp){
 						$('#product-block').html(resp);
 						
