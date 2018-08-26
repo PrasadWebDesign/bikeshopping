@@ -7,9 +7,15 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Bike;
 use App\bike_other_image;
-// use App\Http\Controllers\View;
+use App\Booking;
+use App\Http\Requests\BookingRequest;
+use Carbon\Carbon;
+use Mail;
+use App\Mail\BookingRequestMail;
+
 use File;
 use View;
+
 
 
 class BikesController extends Controller
@@ -18,7 +24,8 @@ class BikesController extends Controller
 	public function __construct()
 	{
 		// except index, every function requires login
-		$this->middleware('auth')->except(['index', 'get_bike_filter', 'get_bike_price_filter']);
+		$this->middleware('auth')->except(['index','show_single_bike','booking_request', 'get_bike_filter', 'get_bike_price_filter']);
+
 
 		// except create and store, everything can be accessed without login; create and store requires login.
 		// just another way to code :)
@@ -28,9 +35,9 @@ class BikesController extends Controller
 	public function index()
 	{
 		//paginate(per_page) will fetch the records and create numbered links
-    	$bikes = Bike::paginate(4); 
-        $min_rate = Bike::min('hourly_rate')-50;
-        $max_rate = Bike::max('hourly_rate')+50;
+    	$bikes = Bike::paginate(10);
+      $min_rate = Bike::min('hourly_rate')-50;
+       $max_rate = Bike::max('hourly_rate')+50;
 
     	//simplePaginate(per_page) will fetch the records and create next/prev links
     	// $bikes = Bike::simplePaginate(1);
@@ -38,6 +45,108 @@ class BikesController extends Controller
     	//in view call $result->links() to generate markup for pagination
 
     	return view('bikes',compact('bikes', 'min_rate', 'max_rate'));
+	}
+
+
+	public function show_single_bike($id)
+	{
+		$bike = Bike::findOrFail($id);
+		// return $bike;
+		$cover_image = $bike->cover_image;
+		$bike_other_images = bike_other_image::where('bike_id',$id)->pluck('image');
+		$bike_other_images->push($cover_image);
+		return view('bike_single',compact(['bike','bike_other_images']));
+	}
+
+	public function booking_request(BookingRequest $request)
+	{
+
+		// $validator = \Validator::make($request->all(),[
+		// 	'name'=>'required',
+		// 	'email'=>'required|email',
+		// 	'mobile'=>'required|max:10',
+		// 	'age'=>'required|max:2',
+		// 	'ride_start_date'=>'required',
+		// 	'ride_end_date'=>'required',
+		// 	'address'=>'required'
+		// ]);
+		// $this->validate($request,[
+		// 	'name'=>'required',
+		// 	'email'=>'required|email',
+		// 	'mobile'=>'required|max:10',
+		// 	'age'=>'required|max:2',
+		// 	'ride_start_date'=>'required',
+		// 	'ride_end_date'=>'required',
+		// 	'address'=>'required'
+		// ]);
+
+		// if ($validator->fails())
+  //       {
+  //           return response()->json(['errors'=>$validator->errors()->all()]);
+  //       }
+		// return response()->json(['errors'=>$errors->all()]);
+
+		// dd($request->all());
+
+		$hour_diff = round(round((strtotime($request->ride_end_date) - strtotime($request->ride_start_date))/3600, 1));
+		// dd($hour_diff);
+
+		// using diff function
+		// $start  = date_create($request->ride_start_date);
+		// $end 	= date_create($request->ride_end_date);
+		// $diff  	= date_diff( $start, $end );
+		// var_dump($diff);
+		// $temp = $diff->h.':'.$diff->i;
+		// dd($temp);
+
+		// using carbon
+		// $dt = new Carbon();
+		// $dt = Carbon::parse($request->ride_end_date)->diffInHours(Carbon::parse($request->ride_start_date));
+		// dd($dt);
+// dd(date('Y-m-d H:i:s',strtotime($request->ride_start_date)));
+		$total_amount = $hour_diff * $request->bike_hourly_rate;
+		// dd($total_amount);
+
+		$booking_request = new Booking;
+		$booking_request->name = $request->name;
+		$booking_request->email = $request->email;
+		$booking_request->mobile = $request->mobile;
+		$booking_request->age = $request->age;
+		$booking_request->ride_start_date = date('Y-m-d H:i:s',strtotime($request->ride_start_date));
+		$booking_request->ride_end_date = date('Y-m-d H:i:s',strtotime($request->ride_end_date));
+		$booking_request->address = $request->address;
+		$booking_request->created_at = time();
+
+		// laravel requires, we must add both the timestapms to the database
+		$booking_request->updated_at = time();
+		$booking_request->total_amount = $total_amount;
+		$booking_request->total_hours = $hour_diff;
+		$booking_request->bike_id = $request->bike_id;
+		$booking_request->save();
+
+
+		// prepare data to be sent to email message
+		$bike = Bike::findOrFail($request->bike_id);
+		// $data = array(
+		// 	'name'=>$bike->bike_title,
+		// 	'hourly_rate'=>$bike->hourly_rate,
+		// 	'image'=>$bike->cover_image,
+		// 	'ride_start_date'=>$request->ride_start_date,
+		// 	'ride_end_date'=>$request->ride_end_date,
+
+		// 	'ride_duration'=>$hour_diff,
+		// 	'total_amount'=>$total_amount
+		// );
+		$email = new BookingRequestMail($bike);
+		$email->ride_start_date = Carbon::parse($request->ride_start_date)->toDayDateTimeString();
+		$email->ride_end_date = Carbon::parse($request->ride_end_date)->toDayDateTimeString();
+		$email->ride_duration = $hour_diff;
+		$email->total_amount = $total_amount;
+		// send email
+		Mail::to($request->email)->send($email);
+
+		return response()->json(['status'=>'Booking Request Submitted.']);
+
 	}
 
 	// show form to create a new bike
