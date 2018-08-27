@@ -77,8 +77,6 @@ Route::post('/bike_images_partial', 'BikesController@get_bike_image_partial')->n
 Route::delete('/remove_bike_other_image', 'BikesController@remove_bike_other_image')->name('bikes.remove_bike_other_image');
 
 // Teams
-
-
 // get create team form
 Route::get('/create_team', 'TeamController@create')->name('team.create');
 Route::post('/team', 'TeamController@store')->name('team.store');
@@ -89,5 +87,11 @@ Route::put('/team/{id}/edit', 'TeamController@update')->name('team.update');
 
 Route::DELETE('/team/{id}/delete', 'TeamController@destroy')->name('team.destroy');
 
+
+ //bike filter sort by rates
+Route::get('/bike_filter', 'BikesController@get_bike_filter')->name('bikes.get_bike_filter');
+
+//bike filter price range slider
+Route::post('/bike_price_filter', 'BikesController@get_bike_price_filter')->name('bikes.bike_price_filter');
 
 // End Admin Panel routes ------------------------------------
