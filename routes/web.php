@@ -42,17 +42,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //  /////////////////////////////////////////////////////////////
 
-// Shopping Cart routes
-Route::get('/cart', 'CartController@index')->name('cart.index');
-Route::post('/cart', 'CartController@store')->name('cart.store');
-Route::get('/empty', 'CartController@emptyCart')->name('cart.emptyCart');
-Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
-
-// checkout routes
-Route::get('/checkout', 'CheckoutController@index')->name('checkout.index');
-Route::post('/coupon', 'CouponsController@store')->name('coupon.store');
-Route::delete('/coupon', 'CouponsController@destroy')->name('coupon.destroy');
-
 // Admin panel routes -------------------------------------
 
 // home banner
@@ -87,9 +76,7 @@ Route::get('/all_bikes', 'BikesController@list_bikes')->name('bikes.list_bikes')
 Route::post('/bike_images_partial', 'BikesController@get_bike_image_partial')->name('bikes.get_bike_image_partial');
 Route::delete('/remove_bike_other_image', 'BikesController@remove_bike_other_image')->name('bikes.remove_bike_other_image');
 
-
 // Teams
-
 // get create team form
 Route::get('/create_team', 'TeamController@create')->name('team.create');
 Route::post('/team', 'TeamController@store')->name('team.store');
@@ -100,5 +87,11 @@ Route::put('/team/{id}/edit', 'TeamController@update')->name('team.update');
 
 Route::DELETE('/team/{id}/delete', 'TeamController@destroy')->name('team.destroy');
 
+
+ //bike filter sort by rates
+Route::get('/bike_filter', 'BikesController@get_bike_filter')->name('bikes.get_bike_filter');
+
+//bike filter price range slider
+Route::post('/bike_price_filter', 'BikesController@get_bike_price_filter')->name('bikes.bike_price_filter');
 
 // End Admin Panel routes ------------------------------------

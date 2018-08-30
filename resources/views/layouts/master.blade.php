@@ -37,7 +37,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			});
 	</script>
 <!-- //end-smoth-scrolling -->
-{{-- <script src="{{URL::to('/')}}/theme_assets/js/simpleCart.min.js"> </script> --}}
+<script src="{{URL::to('/')}}/theme_assets/js/simpleCart.min.js"> </script>
 <script src="{{URL::to('/')}}/theme_assets/js/bootstrap.min.js"></script>
 @yield('header')
 </head>
