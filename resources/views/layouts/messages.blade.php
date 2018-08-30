@@ -10,6 +10,12 @@
     </div>
 
 @endif
+{{-- @if (session($err))
+    <div class="alert alert-danger" role="alert">
+        {{$err}}
+    </div>
+
+@endif --}}
 @if (count($errors)>0)
 
     <div class="alert alert-danger">
