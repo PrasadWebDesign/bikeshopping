@@ -19,7 +19,7 @@
 						        <li><a href="{{ url::to('/contact') }}">Contact</a></li>
 					        </ul>
 					        <!-- Right Side Of Navbar -->
-		                    <ul class="navbar-nav ml-auto">
+		                    {{-- <ul class="navbar-nav ml-auto">
 		                        <!-- Authentication Links -->
 		                        @guest
 		                            <li class="nav-item">
@@ -47,8 +47,47 @@
 		                                </div>
 		                            </li>
 		                        @endguest
-		                    </ul>
+		                    </ul> --}}
 					    </div>
 					    <!--/.navbar-collapse-->
 					</nav>
 					<!--/.navbar-->
+				</div>
+			</div>
+			<div class="header-right">
+				<div class="search">
+					{{-- <div class="search-text">
+					    <input class="serch" type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}"/>
+					</div> --}}
+					<div class="cart box_1">
+						<a href="{{ route('cart.index') }}">
+						<h3>
+							<img src="{{ asset('theme_assets/images/cart.png') }}" alt=""/>
+							@if (Cart::instance('default')->count() > 0 )
+								<div class="total">
+									<span class="simpleCart_total">{{ Cart::instance('default')->count()}}</span>
+								</div>
+							@endif
+							
+							</h3>
+						</a>
+						
+					</div>    
+					<div class="head-signin">
+						@guest
+						<h5><a href="{{ route('login') }}"><i class="hd-dign"></i> {{ __('Login') }}</a></h5>
+						@else
+						<h5><a href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}"><i class="hd-dign"></i></a></h5>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            	@csrf
+                        	</form>
+                    	@endguest
+					</div>              
+                     <div class="clearfix"> </div>					
+				</div>
+			</div>
+		 <div class="clearfix"> </div>
+		</div>

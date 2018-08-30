@@ -3,19 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-
 use App\Bike;
 use App\bike_other_image;
+use File;
 use App\Booking;
 use App\Http\Requests\BookingRequest;
 use Carbon\Carbon;
 use Mail;
 use App\Mail\BookingRequestMail;
-
-use File;
-use View;
-
 
 
 class BikesController extends Controller
@@ -24,8 +19,7 @@ class BikesController extends Controller
 	public function __construct()
 	{
 		// except index, every function requires login
-		$this->middleware('auth')->except(['index','show_single_bike','booking_request', 'get_bike_filter', 'get_bike_price_filter']);
-
+		$this->middleware('auth')->except(['index','show_single_bike','booking_request']);
 
 		// except create and store, everything can be accessed without login; create and store requires login.
 		// just another way to code :)
@@ -36,15 +30,13 @@ class BikesController extends Controller
 	{
 		//paginate(per_page) will fetch the records and create numbered links
     	$bikes = Bike::paginate(10);
-      $min_rate = Bike::min('hourly_rate')-50;
-       $max_rate = Bike::max('hourly_rate')+50;
 
     	//simplePaginate(per_page) will fetch the records and create next/prev links
     	// $bikes = Bike::simplePaginate(1);
 
     	//in view call $result->links() to generate markup for pagination
 
-    	return view('bikes',compact('bikes', 'min_rate', 'max_rate'));
+    	return view('bikes',compact('bikes'));
 	}
 
 
@@ -406,24 +398,5 @@ class BikesController extends Controller
 			
         }
     	
-    }
-
-    public function get_bike_filter(Request $request) {
-
-        $bikes = Bike::sort_by_bikes($request['sort_by_bikes']);
-
-        return view('/ajax_bikes_sort_filter', compact('bikes'))->render();
-    }
-
-    public function get_bike_price_filter(Request $request) {
-        $arr_range = explode(',', $request['price_range']);
-        $min_price = $arr_range[0];
-
-        $max_price = $arr_range[1];
-
-        $bikes = Bike::sort_by_price($min_price, $max_price);
-
-        return view('/ajax_bikes_sort_filter', compact('bikes'))->render();
-
     }
 }
