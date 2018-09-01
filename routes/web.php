@@ -42,6 +42,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //  /////////////////////////////////////////////////////////////
 
+// Shopping Cart routes
+Route::get('/cart', 'CartController@index')->name('cart.index');
+Route::post('/cart', 'CartController@store')->name('cart.store');
+Route::get('/empty', 'CartController@emptyCart')->name('cart.emptyCart');
+Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
+
+// checkout routes
+Route::get('/checkout', 'CheckoutController@index')->name('checkout.index');
+Route::post('/coupon', 'CouponsController@store')->name('coupon.store');
+Route::delete('/coupon', 'CouponsController@destroy')->name('coupon.destroy');
+
 // Admin panel routes -------------------------------------
 
 // home banner
