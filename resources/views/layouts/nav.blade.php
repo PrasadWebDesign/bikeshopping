@@ -70,9 +70,26 @@
 							@endif
 							
 							</h3>
+
 						</a>
 						
-					</div>    
+					</div>  
+
+					<div class="heart box_1">
+						<a href="{{ route('wishlist.index') }}">
+						<h3>
+							<img src="{{ asset('theme_assets/images/cart.png') }}" alt=""/>
+							@if (Cart::instance('wishlist')->count() > 0 )
+								<div class="total">
+									<span class="simpleCart_total">{{ Cart::instance('wishlist')->count()}}</span>
+								</div>
+							@endif
+							
+							</h3>
+							
+						</a>
+						
+					</div>     
 					<div class="head-signin">
 						@guest
 						<h5><a href="{{ route('login') }}"><i class="hd-dign"></i> {{ __('Login') }}</a></h5>

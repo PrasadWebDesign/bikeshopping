@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
-
+use Illuminate\Support\MessageBag;
+use Auth;
 
 class CheckoutController extends Controller
 {
@@ -46,6 +48,13 @@ class CheckoutController extends Controller
      */
     public function index()
     {
+        if(!Auth::check()) {
+            $error_bag = new MessageBag();
+            $error_bag->add('error', 'Please Login to access restricted area.');
+            return Redirect::route('login')->withInput()->withErrors($error_bag);
+        }
+
+        
 
         if (!Cart::instance('default')->count()) {
             return redirect('/');

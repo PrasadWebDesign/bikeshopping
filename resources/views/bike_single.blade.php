@@ -131,6 +131,14 @@
 						<input type="hidden" name="price" value="{{$bike->hourly_rate}}">
 						<button type="submit" class="btn btn-danger btn-lg" value="Book">Book</button>
 					</form>
+
+					<form action="{{ route('wishlist.store') }}" method="POST">
+						@csrf
+						<input type="hidden" name="id" value="{{$bike->id}}">
+						<input type="hidden" name="name" value="{{$bike->bike_title}}">
+						<input type="hidden" name="price" value="{{$bike->hourly_rate}}">
+						<button type="submit" class="btn btn-warning btn-lg" value="Add to WIshlist">Add to WIshlist</button>
+					</form>
 				</div>
 			
 			   <div class="clearfix"> </div>
