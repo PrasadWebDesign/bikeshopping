@@ -13,32 +13,33 @@
 			</div>
 
 		</div>
+
 		<div class="row">
 			<div class="col-md-6">
 				<h3>Billing Details</h3>
 				<div class="form-group">
 					<label for="Your Name:">Your Name</label> 
-					<input type="text" name="name" id="name" class="form-control">
+					<input type="text" name="name" id="name" class="form-control" value="{{$userDetails->name}}">
 				</div>
 				<div class="form-group">
 					<label for="Your Name:">Email</label>
-					<input type="email" name="email" id="email" class="form-control">
+					<input type="email" name="email" id="email" class="form-control" value="{{$userDetails->email}}">
 				</div>
 				<div class="form-group">
 					<label for="Your Name:">Address</label>
-					<input type="text" name="address" id="address" class="form-control">
+					<input type="text" name="address" id="address" class="form-control" value="{{$userDetails->address}}">
 				</div>
 				<div class="form-group">
 					<label for="Your Name:">City</label>
-					<input type="text" name="city" id="city" class="form-control">
+					<input type="text" name="city" id="city" class="form-control" value="{{$userDetails->city}}">
 				</div>
 				<div class="form-group">
 					<label for="Your Name:">State</label>
-					<input type="text" name="state" id="state" class="form-control">
+					<input type="text" name="state" id="state" class="form-control" value="{{$userDetails->state}}">
 				</div>
 				<div class="form-group">
 					<label for="Your Name:">Pincode</label>
-					<input type="text" name="pincode" id="pincode" class="form-control">
+					<input type="text" name="pincode" id="pincode" class="form-control" value="{{$userDetails->pincode}}">
 				</div>
 				<div class="form-group">
 					<input type="submit" name="btnSubmit" value="Submit" class="btn btn-danger">
