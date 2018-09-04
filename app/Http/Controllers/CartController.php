@@ -50,10 +50,10 @@ class CartController extends Controller
         // so that we can use it in view to retrive that particular item's properties
         // like say if bullet is in cart and we wanna retrieve it's properties in cart view
         // then we can use this relationship
-        Cart::add($request->id,$request->name,1,$request->price)
+        Cart::instance('default')->add($request->id,$request->name,1,$request->price)
         ->associate('App\Bike');
 
-        return redirect()->route('cart.index')->with('status','Bike addeed to cart');
+        return redirect()->route('cart.index')->with('status','Bike added to cart');
     }
 
     /**
@@ -107,4 +107,41 @@ class CartController extends Controller
         Cart::remove($id);
         return back()->with('status','Bike has been removed');
     }
+
+
+    public function wishlist_index()
+    {
+        // dd(Cart::content());
+        return view('wishlist');
+    }
+
+    public function wishliststore(Request $request)
+    {
+        
+        // find duplicates bikes in cart
+        $duplicates = Cart::instance('wishlist')->search(function($cartItem, $rowId) use($request){
+            return $cartItem->id === $request->id;
+        });
+
+        // if found return error
+        if ($duplicates->isNotEmpty()) {
+            return redirect()->route('wishlist.index')->with('status','Bike is already added to the wishlist');
+        }
+
+        // add item to cart and associate it with the model
+        // so that we can use it in view to retrive that particular item's properties
+        // like say if bullet is in cart and we wanna retrieve it's properties in cart view
+        // then we can use this relationship
+        Cart::instance('wishlist')->add($request->id,$request->name,1,$request->price)
+        ->associate('App\Bike');
+
+        return redirect()->route('wishlist.index')->with('status','Bike added to wishlist');
+    }
+
+    public function wishlistdestroy($id)
+    {
+        Cart::instance('wishlist')->remove($id);
+        return back()->with('status','Bike has been removed');
+    }
+
 }

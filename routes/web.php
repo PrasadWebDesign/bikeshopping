@@ -48,6 +48,12 @@ Route::post('/cart', 'CartController@store')->name('cart.store');
 Route::get('/empty', 'CartController@emptyCart')->name('cart.emptyCart');
 Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
 
+
+// Shopping Wishlist routes
+Route::get('/wishlist', 'CartController@wishlist_index')->name('wishlist.index');
+Route::post('/wishlist', 'CartController@wishliststore')->name('wishlist.store');
+Route::delete('/wishlist/{product}', 'CartController@wishlistdestroy')->name('wishlist.destroy');
+
 // checkout routes
 Route::get('/checkout', 'CheckoutController@index')->name('checkout.index');
 Route::post('/coupon', 'CouponsController@store')->name('coupon.store');

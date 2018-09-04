@@ -8,6 +8,15 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
+                  
+                    @if($errors->any())
+                    <ul class="alert alert-danger">
+                    @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                    @endforeach
+                    </ul>
+                    @endif
+                    
                     <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
                         @csrf
 
