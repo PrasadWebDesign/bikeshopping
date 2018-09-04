@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\MessageBag;
 use Auth;
+use App\User;
 
 class CheckoutController extends Controller
 {
@@ -48,10 +49,13 @@ class CheckoutController extends Controller
      */
     public function index()
     {
+        $userDetails = [];
         if(!Auth::check()) {
             $error_bag = new MessageBag();
-            $error_bag->add('error', 'Please Login to access restricted area.');
+            $error_bag->add('error', 'Please Login to checkout.');
             return Redirect::route('login')->withInput()->withErrors($error_bag);
+        } else {
+            $userDetails = User::find( Auth::id() );
         }
 
         
@@ -84,7 +88,8 @@ class CheckoutController extends Controller
             'discount'=>$this->getNewValues()->get('discount'),
             'newSubtotal'=>$this->getNewValues()->get('newSubtotal'),
             'newTax'=>$this->getNewValues()->get('newTax'),
-            'newTotal'=>$this->getNewValues()->get('newTotal')
+            'newTotal'=>$this->getNewValues()->get('newTotal'),
+            'userDetails'=> $userDetails
         ]);
 
         // if we get array then we would fetch the values like this
